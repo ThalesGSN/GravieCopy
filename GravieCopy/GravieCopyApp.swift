@@ -1,17 +1,10 @@
-//
-//  GravieCopyApp.swift
-//  GravieCopy
-//
-//  Created by Thales Nunes on 23/05/26.
-//
-
 import SwiftUI
 
 @main
 struct GravieCopyApp: App {
+    @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+
     var body: some Scene {
-        WindowGroup {
-            ContentView()
-        }
+        Settings { SettingsView() }
     }
 }

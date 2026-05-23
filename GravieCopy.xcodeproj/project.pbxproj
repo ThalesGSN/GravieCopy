@@ -6,8 +6,17 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		0E1D47F82FC20A4B005DBB56 /* GravieCopy.xcworkspace in Resources */ = {isa = PBXBuildFile; fileRef = 0E1D47F72FC20A4B005DBB56 /* GravieCopy.xcworkspace */; };
+		1F87CF80F3FB875A1B6C4811 /* Pods_GravieCopy.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A19B6303BB3D2A596BF79E8E /* Pods_GravieCopy.framework */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
+		0E1D47F72FC20A4B005DBB56 /* GravieCopy.xcworkspace */ = {isa = PBXFileReference; lastKnownFileType = wrapper.workspace; path = GravieCopy.xcworkspace; sourceTree = "<group>"; };
 		0E53DF5A2FC14FD300C73872 /* GravieCopy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GravieCopy.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		3735204EA30BA84A006E6708 /* Pods-GravieCopy.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GravieCopy.release.xcconfig"; path = "Target Support Files/Pods-GravieCopy/Pods-GravieCopy.release.xcconfig"; sourceTree = "<group>"; };
+		9E614D7BA56F350DAB97CF44 /* Pods-GravieCopy.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GravieCopy.debug.xcconfig"; path = "Target Support Files/Pods-GravieCopy/Pods-GravieCopy.debug.xcconfig"; sourceTree = "<group>"; };
+		A19B6303BB3D2A596BF79E8E /* Pods_GravieCopy.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GravieCopy.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -23,6 +32,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1F87CF80F3FB875A1B6C4811 /* Pods_GravieCopy.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -34,6 +44,9 @@
 			children = (
 				0E53DF5C2FC14FD300C73872 /* GravieCopy */,
 				0E53DF5B2FC14FD300C73872 /* Products */,
+				EB710FD93BEA46EF3833E5D8 /* Pods */,
+				7160969D59A586FB4DE06A14 /* Frameworks */,
+				0E1D47F72FC20A4B005DBB56 /* GravieCopy.xcworkspace */,
 			);
 			sourceTree = "<group>";
 		};
@@ -45,6 +58,23 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		7160969D59A586FB4DE06A14 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				A19B6303BB3D2A596BF79E8E /* Pods_GravieCopy.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		EB710FD93BEA46EF3833E5D8 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				9E614D7BA56F350DAB97CF44 /* Pods-GravieCopy.debug.xcconfig */,
+				3735204EA30BA84A006E6708 /* Pods-GravieCopy.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -52,9 +82,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 0E53DF652FC14FD400C73872 /* Build configuration list for PBXNativeTarget "GravieCopy" */;
 			buildPhases = (
+				131D52F9A59BF326295507D2 /* [CP] Check Pods Manifest.lock */,
 				0E53DF562FC14FD300C73872 /* Sources */,
 				0E53DF572FC14FD300C73872 /* Frameworks */,
 				0E53DF582FC14FD300C73872 /* Resources */,
+				36A0D022F0BD0AA65A9E6564 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -64,8 +96,6 @@
 				0E53DF5C2FC14FD300C73872 /* GravieCopy */,
 			);
 			name = GravieCopy;
-			packageProductDependencies = (
-			);
 			productName = GravieCopy;
 			productReference = 0E53DF5A2FC14FD300C73872 /* GravieCopy.app */;
 			productType = "com.apple.product-type.application";
@@ -109,10 +139,57 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0E1D47F82FC20A4B005DBB56 /* GravieCopy.xcworkspace in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		131D52F9A59BF326295507D2 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-GravieCopy-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		36A0D022F0BD0AA65A9E6564 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-GravieCopy/Pods-GravieCopy-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-GravieCopy/Pods-GravieCopy-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-GravieCopy/Pods-GravieCopy-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		0E53DF562FC14FD300C73872 /* Sources */ = {
@@ -241,6 +318,7 @@
 		};
 		0E53DF662FC14FD400C73872 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9E614D7BA56F350DAB97CF44 /* Pods-GravieCopy.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -261,8 +339,14 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				IPHONEOS_DEPLOYMENT_TARGET = 26.5;
-				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
-				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 26.4;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = us.gravie.GravieCopy;
@@ -275,7 +359,7 @@
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 6.0;
 				TARGETED_DEVICE_FAMILY = "1,2,7";
 				XROS_DEPLOYMENT_TARGET = 26.5;
 			};
@@ -283,6 +367,7 @@
 		};
 		0E53DF672FC14FD400C73872 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3735204EA30BA84A006E6708 /* Pods-GravieCopy.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -303,8 +388,14 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				IPHONEOS_DEPLOYMENT_TARGET = 26.5;
-				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
-				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 26.4;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = us.gravie.GravieCopy;
@@ -317,7 +408,7 @@
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 6.0;
 				TARGETED_DEVICE_FAMILY = "1,2,7";
 				XROS_DEPLOYMENT_TARGET = 26.5;
 			};
