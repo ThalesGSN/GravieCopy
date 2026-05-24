@@ -23,11 +23,23 @@ final class DatabaseManager {
 
     private(set) var isLocked = true
     private(set) var repository: ClipboardRepository?
+    // Stored so @Observable notifies SwiftUI when the vault is created or wiped.
+    private(set) var vaultExists: Bool
 
     private var dbQueue: DatabaseQueue?
     private var autoLockTask: Task<Void, Never>?
 
     var autoLockInterval: TimeInterval = 15 * 60
+
+    // MARK: - Init
+
+    private init() {
+        let appSupport = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0]
+        let salt = appSupport
+            .appendingPathComponent("GravieCopy")
+            .appendingPathComponent("vault.salt")
+        vaultExists = FileManager.default.fileExists(atPath: salt.path)
+    }
 
     // MARK: - Paths
 
@@ -43,9 +55,7 @@ final class DatabaseManager {
 
     // MARK: - Vault state
 
-    var hasExistingVault: Bool {
-        FileManager.default.fileExists(atPath: saltURL.path)
-    }
+    var hasExistingVault: Bool { vaultExists }
 
     // MARK: - Salt
 
@@ -59,6 +69,7 @@ final class DatabaseManager {
 
         let salt = KeyDerivationService.generateSalt()
         try salt.write(to: saltURL, options: .atomic)
+        vaultExists = true
 
         // Exclude the salt file from iCloud backups.
         var resourceValues = URLResourceValues()
@@ -99,6 +110,16 @@ final class DatabaseManager {
         repository = nil
         dbQueue = nil
         isLocked = true
+    }
+
+    /// Irreversibly destroys the encrypted vault (DB + salt) and Keychain entry.
+    /// Called after too many failed password attempts.
+    func wipeVault() {
+        lock()
+        try? FileManager.default.removeItem(at: dbURL)
+        try? FileManager.default.removeItem(at: saltURL)
+        KeychainService.delete()
+        vaultExists = false
     }
 
     // MARK: - Auto-Lock
