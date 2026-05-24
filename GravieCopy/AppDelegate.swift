@@ -22,8 +22,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             systemSymbolName: "doc.on.clipboard",
             accessibilityDescription: "GravieCopy"
         )
-        statusItem.button?.action = #selector(togglePopover)
+        statusItem.button?.action = #selector(handleClick)
         statusItem.button?.target = self
+        statusItem.button?.sendAction(on: [.leftMouseUp, .rightMouseUp])
     }
 
     private func setupPopover() {
@@ -42,6 +43,22 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     // MARK: - Popover control
+
+    @objc private func handleClick(_ sender: NSStatusBarButton) {
+        guard let event = NSApp.currentEvent else { return }
+        if event.type == .rightMouseUp {
+            closePopover()
+            let menu = NSMenu()
+            menu.addItem(NSMenuItem(title: "Quit GravieCopy", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q"))
+            // Temporarily assign menu so the button renders it, then clear so
+            // future left-clicks still open the popover.
+            statusItem.menu = menu
+            statusItem.button?.performClick(nil)
+            statusItem.menu = nil
+        } else {
+            togglePopover()
+        }
+    }
 
     @objc func togglePopover() {
         guard let button = statusItem.button else { return }
