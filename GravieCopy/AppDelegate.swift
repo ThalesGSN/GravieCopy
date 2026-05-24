@@ -4,6 +4,7 @@ import SwiftUI
 final class AppDelegate: NSObject, NSApplicationDelegate {
     private var statusItem: NSStatusItem!
     private var popover: NSPopover!
+    private var aboutWindow: NSWindow?
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         NSApp.setActivationPolicy(.accessory)
@@ -49,6 +50,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         if event.type == .rightMouseUp {
             closePopover()
             let menu = NSMenu()
+            menu.addItem(NSMenuItem(title: "About GravieCopy", action: #selector(openAbout), keyEquivalent: ""))
+            menu.addItem(.separator())
             menu.addItem(NSMenuItem(title: "Settings…", action: #selector(openSettings), keyEquivalent: ","))
             menu.addItem(.separator())
             menu.addItem(NSMenuItem(title: "Quit GravieCopy", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q"))
@@ -76,6 +79,27 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
     func closePopover() {
         popover.performClose(nil)
+    }
+
+    @objc private func openAbout() {
+        if let existing = aboutWindow, existing.isVisible {
+            existing.makeKeyAndOrderFront(nil)
+            NSApp.activate(ignoringOtherApps: true)
+            return
+        }
+        let window = NSWindow(
+            contentRect: .zero,
+            styleMask: [.titled, .closable],
+            backing: .buffered,
+            defer: false
+        )
+        window.title = "About GravieCopy"
+        window.contentViewController = NSHostingController(rootView: AboutView())
+        window.isReleasedWhenClosed = false
+        window.center()
+        window.makeKeyAndOrderFront(nil)
+        NSApp.activate(ignoringOtherApps: true)
+        aboutWindow = window
     }
 
     @objc private func openSettings() {
