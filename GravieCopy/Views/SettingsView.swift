@@ -1,5 +1,6 @@
 import SwiftUI
 import AppKit
+import ServiceManagement
 
 struct SettingsView: View {
     @Bindable private var store = SettingsStore.shared
@@ -9,6 +10,7 @@ struct SettingsView: View {
     @State private var newBundleID = ""
     @State private var showDeleteVaultConfirm = false
     @State private var showClearHistoryConfirm = false
+    @State private var launchAtLogin = false
 
     var body: some View {
         Form {
@@ -24,6 +26,33 @@ struct SettingsView: View {
 
     private var generalSection: some View {
         Section("General") {
+            Toggle("Launch at Login", isOn: $launchAtLogin)
+                .onAppear {
+                    launchAtLogin = SMAppService.mainApp.status == .enabled
+                }
+                .onChange(of: launchAtLogin) { _, newValue in
+                    do {
+                        if newValue {
+                            try SMAppService.mainApp.register()
+                        } else {
+                            try SMAppService.mainApp.unregister()
+                        }
+                    } catch {
+                        launchAtLogin = !newValue
+                    }
+                }
+
+            if SMAppService.mainApp.status == .requiresApproval {
+                HStack(spacing: 6) {
+                    Image(systemName: "exclamationmark.triangle.fill")
+                        .foregroundStyle(.orange)
+                        .imageScale(.small)
+                    Text("Approve in **System Settings › General › Login Items**")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+            }
+
             Picker("Auto-lock after", selection: $store.autoLockInterval) {
                 ForEach(SettingsStore.autoLockOptions, id: \.value) { opt in
                     Text(opt.label).tag(opt.value)
