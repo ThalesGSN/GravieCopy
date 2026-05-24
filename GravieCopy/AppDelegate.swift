@@ -49,6 +49,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         if event.type == .rightMouseUp {
             closePopover()
             let menu = NSMenu()
+            menu.addItem(NSMenuItem(title: "Settings…", action: #selector(openSettings), keyEquivalent: ","))
+            menu.addItem(.separator())
             menu.addItem(NSMenuItem(title: "Quit GravieCopy", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q"))
             // Temporarily assign menu so the button renders it, then clear so
             // future left-clicks still open the popover.
@@ -74,5 +76,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
     func closePopover() {
         popover.performClose(nil)
+    }
+
+    @objc private func openSettings() {
+        NSApp.sendAction(Selector(("showSettingsWindow:")), to: nil, from: nil)
+        NSApp.activate(ignoringOtherApps: true)
     }
 }

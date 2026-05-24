@@ -3,16 +3,21 @@ import AppKit
 
 struct SettingsView: View {
     @Bindable private var store = SettingsStore.shared
+    private let vault = DatabaseManager.shared
+
     @State private var isAddingApp = false
     @State private var newBundleID = ""
+    @State private var showDeleteVaultConfirm = false
+    @State private var showClearHistoryConfirm = false
 
     var body: some View {
         Form {
             generalSection
             blockedAppsSection
+            dangerSection
         }
         .formStyle(.grouped)
-        .frame(minWidth: 460, minHeight: 380)
+        .frame(minWidth: 460, minHeight: 480)
     }
 
     // MARK: - General
@@ -82,7 +87,6 @@ struct SettingsView: View {
                     .buttonStyle(.plain)
                     .foregroundStyle(Color.accentColor)
 
-                    // Pick from currently running apps that aren't already blocked.
                     Menu {
                         ForEach(pickableRunningApps, id: \.bundleIdentifier) { app in
                             Button(app.localizedName ?? (app.bundleIdentifier ?? "Unknown")) {
@@ -107,6 +111,70 @@ struct SettingsView: View {
             Text("Blocked Apps")
         } footer: {
             Text("Clipboard changes are not recorded when these apps are in focus.")
+        }
+    }
+
+    // MARK: - Danger Zone
+
+    private var dangerSection: some View {
+        Section {
+            // Clear clipboard history (keeps vault + settings intact)
+            HStack {
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("Clear History")
+                        .fontWeight(.medium)
+                    Text("Deletes all unpinned clipboard items permanently.")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+                Spacer()
+                Button("Clear…", role: .destructive) {
+                    showClearHistoryConfirm = true
+                }
+                .confirmationDialog(
+                    "Clear all clipboard history?",
+                    isPresented: $showClearHistoryConfirm,
+                    titleVisibility: .visible
+                ) {
+                    Button("Clear History", role: .destructive) {
+                        vault.repository.map { try? $0.deleteAll() }
+                    }
+                    Button("Cancel", role: .cancel) {}
+                } message: {
+                    Text("All unpinned items will be deleted. This cannot be undone.")
+                }
+            }
+
+            // Delete vault (irreversible — requires fresh setup)
+            HStack {
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("Delete Vault")
+                        .fontWeight(.medium)
+                        .foregroundStyle(.red)
+                    Text("Destroys the encrypted database, salt, and Keychain entry.")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+                Spacer()
+                Button("Delete…", role: .destructive) {
+                    showDeleteVaultConfirm = true
+                }
+                .disabled(!vault.vaultExists)
+                .confirmationDialog(
+                    "Permanently delete the vault?",
+                    isPresented: $showDeleteVaultConfirm,
+                    titleVisibility: .visible
+                ) {
+                    Button("Delete Vault", role: .destructive) {
+                        vault.wipeVault()
+                    }
+                    Button("Cancel", role: .cancel) {}
+                } message: {
+                    Text("All clipboard history and your encryption key will be destroyed. A new master password will be required.")
+                }
+            }
+        } header: {
+            Text("Data")
         }
     }
 
