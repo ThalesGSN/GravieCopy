@@ -13,10 +13,13 @@ A secure, native macOS clipboard manager built for handling sensitive healthcare
 - **AES-256 encrypted vault** — clipboard history stored in SQLCipher-encrypted SQLite; no plaintext ever hits the disk
 - **Touch ID unlock** — derived key stored in Keychain with biometric access control; no password typing after first setup
 - **PBKDF2-SHA256 key derivation** — 100k iterations; master password is never stored
-- **Auto-lock** — vault locks automatically after configurable inactivity (5 min → Never)
-- **Ephemeral retention** — unpinned items auto-purged after a configurable window (12 h → Keep forever)
+- **Brute-force protection** — 3 consecutive wrong passwords trigger progressive lockouts (2 min, then 5 min); third failure wipes the vault; counter survives force-quit (persisted in UserDefaults)
+- **Auto-lock** — vault locks automatically after configurable inactivity (5 min → 4 h)
+- **Launch at Login** — optional auto-start via `SMAppService`; prompts to approve in System Settings if required
+- **Ephemeral retention** — unpinned items auto-purged after a configurable window (12 h → 1 month)
 - **App blacklist** — ignores clipboard changes when password managers or other sensitive apps are in focus
 - **Global hotkey** — `Cmd+Shift+V` opens the panel over any active window (Carbon `RegisterEventHotKey`, no extra permissions)
+- **Right-click menu** — right-click the menu bar icon for About, Settings, and Quit without opening the main panel
 - **Auto-paste** — selects an item, restores focus to your previous app, and injects `Cmd+V` via `CGEvent`
 - **In-memory search** — full-text search runs entirely in RAM on decrypted content
 - **Pinned items** — pin frequently used templates; they survive the retention purge
@@ -100,11 +103,19 @@ Managed via [CocoaPods](https://cocoapods.org):
 
 ## Settings
 
-Open **Settings** (`Cmd+,` while the panel is active):
+Open **Settings** (`Cmd+,` or right-click the menu bar icon → **Settings…**):
 
-- **Auto-lock after** — 5 min / 15 min / 30 min / 1 h / 4 h / Never
-- **Retain history for** — 12 h / 24 h / 48 h / 7 days / Keep forever
-- **Blocked Apps** — add bundle IDs manually or pick from running apps; built-in defaults include 1Password, Bitwarden, LastPass, Zoom
+**General**
+- **Launch at Login** — toggle auto-start; if system approval is needed a prompt links directly to System Settings › Login Items
+- **Auto-lock after** — 5 min / 15 min / 30 min / 1 h / 4 h (default: 1 h)
+- **Retain history for** — 12 h / 24 h / 48 h / 7 days / 1 month
+
+**Blocked Apps**
+- Add bundle IDs manually or pick from the currently running apps menu; built-in defaults include 1Password, Bitwarden, LastPass, Zoom
+
+**Data**
+- **Clear History** — permanently deletes all unpinned clipboard items (vault and settings intact)
+- **Delete Vault** — destroys the encrypted database, salt file, and Keychain entry; requires fresh setup afterwards
 
 ---
 

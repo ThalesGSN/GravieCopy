@@ -37,7 +37,7 @@ final class SettingsStore {
         if ud.object(forKey: "autoLockInterval") != nil {
             autoLockInterval = ud.double(forKey: "autoLockInterval")
         } else {
-            autoLockInterval = 15 * 60  // default: 15 minutes
+            autoLockInterval = 3600  // default: 1 hour
         }
 
         if ud.object(forKey: "retentionPeriod") != nil {
@@ -57,14 +57,13 @@ final class SettingsStore {
         ("30 minutes", 30 * 60),
         ("1 hour",     3600),
         ("4 hours",    4 * 3600),
-        ("Never",      0),
     ]
 
     static let retentionOptions: [(label: String, value: TimeInterval)] = [
-        ("12 hours",     12 * 3600),
-        ("24 hours",     24 * 3600),
-        ("48 hours",     48 * 3600),
-        ("7 days",       7 * 24 * 3600),
-        ("Keep forever", 0),
+        ("12 hours",  12 * 3600),
+        ("24 hours",  24 * 3600),
+        ("48 hours",  48 * 3600),
+        ("7 days",    7 * 24 * 3600),
+        ("1 month",   30 * 24 * 3600),
     ]
 }

@@ -36,6 +36,11 @@ struct ClipboardListView: View {
             listArea
             Divider()
             footer
+            // Hidden button captures Cmd+Ctrl+Shift+V at window level.
+            Button("", action: pasteSelectedPlainText)
+                .keyboardShortcut("v", modifiers: [.command, .control, .shift])
+                .frame(width: 0, height: 0)
+                .hidden()
         }
         .onAppear {
             loadItems()
@@ -58,9 +63,9 @@ struct ClipboardListView: View {
             TextField("Search clipboard…", text: $searchText)
                 .textFieldStyle(.plain)
                 .focused($searchFocused)
-                .onKeyPress(.upArrow)   { moveSelection(-1); return .handled }
-                .onKeyPress(.downArrow) { moveSelection(1);  return .handled }
-                .onKeyPress(.return)    { pasteSelected();   return .handled }
+                .onKeyPress(.upArrow)   { moveSelection(-1);         return .handled }
+                .onKeyPress(.downArrow) { moveSelection(1);           return .handled }
+                .onKeyPress(.return)    { pasteSelected();             return .handled }
             if !searchText.isEmpty {
                 Button { searchText = "" } label: {
                     Image(systemName: "xmark.circle.fill")
@@ -189,13 +194,19 @@ struct ClipboardListView: View {
         paste(item)
     }
 
-    private func paste(_ item: ClipboardItem) {
+    private func pasteSelectedPlainText() {
+        guard let id = selectedID,
+              let item = filteredItems.first(where: { $0.id == id }) else { return }
+        paste(item, forcePlainText: true)
+    }
+
+    private func paste(_ item: ClipboardItem, forcePlainText: Bool = false) {
         ClipboardMonitor.shared.pause()
 
         let pb = NSPasteboard.general
         pb.clearContents()
 
-        if pastePlainText {
+        if pastePlainText || forcePlainText {
             let text: String
             switch item.contentType {
             case .plainText: text = String(data: item.rawData, encoding: .utf8) ?? ""
